@@ -9,21 +9,22 @@ body {
   color: #333;
 }
 
+/* PREVENT HORIZONTAL OVERFLOW */
+/* Prevent large translated images or very wide elements from creating a horizontal scrollbar */
+html, body { overflow-x: hidden; }
+
 
 
 
 /* PREBUILD FORM (LIBRARY: UIVERSAL.IO) */
 .form {
-  position: relative;
-  left: -60px;
-  top: 7px;
   display: flex;
   background-color: rgba(255, 255, 255, 0.8); /* white with 80% opacity */
-  margin: 0px 0px 0px 0px; 
+  margin: 0px 0px 0px 12px; 
   flex-direction: column;
   gap: 10px;
   padding: 30px;
-  width: 130%;          /* allow to fill its column */
+  width: 100%;          /* allow to fill its column */
   max-width: 500px;     /* preserve the visual width on large screens */
   border-radius: 20px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -133,6 +134,7 @@ body {
 }
 
 .img-login-form{
+  /* small helper class: general image used in the login form */
   display: block;
   margin: 0px 0px 0px 0px;
   max-width:100%;
@@ -151,17 +153,28 @@ body {
 
 /*IMAGE*/
 
+/* MAKE THE IMAGE RESPONSIVE FOR DESKTOP / TV */
 .side-image {
+  /* separation from the form on large screens */
   margin: 0px 0px 0px 60px;
-  width: 107%;             /* scale to column width */
-  max-width: 1400px;       /* allow a larger image on very wide screens */
+  /* fill its column but respect max-width */
+  width: 100%;
+  /* never wider than viewport minus gap to avoid overflow */
+  max-width: min(1400px, calc(100vw - 120px));
   height: auto;
-  border-radius: 8px;      /* optional */
+  border-radius: 8px;
+  /* gentle right nudge for visual balance on wide screens */
+  transform: translateX(6%);
+  object-fit: contain;
 }
 
+/* Extra-large displays (TVs, ultra-wide) — enlarge image but preserve proportions */
 @media (min-width: 1600px) {
-  /* keep the image large on very wide viewports if desired */
-  .side-image { max-width: 1800px; }
+  .side-image { max-width: min(1800px, calc(100vw - 160px)); transform: translateX(8%); }
+}
+
+@media (min-width: 2000px) {
+  .side-image { max-width: min(2200px, calc(100vw - 200px)); transform: translateX(10%); }
 }
 
 
@@ -199,8 +212,61 @@ body {
 
 
 
-/* responsive: on small screens put image below the form */
+/* ===================================================================
+   MAKE THE IMAGE RESPONSIVE FOR TABLET AND MOBILE
+   - Hide any login illustration on tablet and mobile so it never drops
+     below the form and harms the visual composition.
+   - Ensure the navbar stays pinned to the top by switching the
+     vertical alignment to `flex-start` (so the centered layout used
+     for desktop does not push the navbar away from the top on small
+     screens).
+   - Enlarge and center the form for tablet; slightly smaller for mobile.
+   =================================================================== */
+@media (max-width: 1024px) {
+  /* move all content to the top and center horizontally */
+  body { align-items: center; justify-content: flex-start; }
+  /* stack form and image container vertically and center them */
+  .form-row { flex-direction: column; align-items: center; gap: 18px; }
+  /* hide both possible image classes to cover HTML variations */
+  .side-image, .img-login-form { display: none !important; }
+  /* make the form wider and centered on tablet */
+  .form { width: 90%; max-width: 900px; padding: 36px; }
+  /* ensure navbar is at the very top and not overlapped */
+  .navbar { margin-top: 0 !important; position: sticky; top: 0; z-index: 999; width: 100%; }
+
+  /* OVERRIDE BOOTSTRAP COLUMNS ON TABLET
+     Bootstrap sets `.col-md-6` to 50% width at >=768px; when we hide
+     the image column the remaining column stays 50% wide. This forces
+     the column to be full-width so the form can center and grow. */
+  .row.align-items-center > [class*="col-"] {
+    /* make each column take full row width */
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+  /* center the row's content horizontally to ensure the form sits in the middle */
+  .row.align-items-center { justify-content: center !important; }
+}
+
 @media (max-width: 768px) {
+  /* mobile: similar to tablet but slightly tighter spacing */
+  body { align-items: center; justify-content: flex-start; }
   .form-row { flex-direction: column; align-items: center; }
-  .side-image { width: 100%; max-width: 360px; }
+  .side-image, .img-login-form { display: none !important; }
+  .form { width: 94%; max-width: 720px; padding: 28px; }
+  .navbar { margin-top: 0 !important; position: sticky; top: 0; z-index: 999; width: 100%; }
+
+  /* ALSO FORCE BOOTSTRAP COLUMNS TO FULL WIDTH ON MOBILE (defensive) */
+  .row.align-items-center > [class*="col-"] {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+  .row.align-items-center { justify-content: center !important; }
+}
+
+/* TV: prevent overflow while preserving layout — tighten image max-width relative to viewport */
+@media (min-width: 1600px) {
+  html, body { overflow-x: hidden; }
+  .side-image { max-width: min(1800px, calc(100vw - 160px)); }
 }
