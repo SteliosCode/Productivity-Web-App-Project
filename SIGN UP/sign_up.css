@@ -248,9 +248,10 @@ html, body { overflow-x: hidden; }
 }
 
 /*=====================================
-  SIGN IN BUTTON
+  SIGN UP BUTTON
   - From Uiverse.io by cssbuttons-io 
 =====================================*/
+ 
 button.center-btn {
   align-self: center; /* only this button is centered */
 }
@@ -299,6 +300,10 @@ button.center-btn {
   visibility: visible;
   transform: scale(100) translateX(2px);
 }
+
+
+
+
 
 
 

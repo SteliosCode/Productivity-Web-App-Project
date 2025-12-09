@@ -1,12 +1,13 @@
 <?php
 $host = "localhost";
-$user = "root";   // phpMyAdmin username
-$pass = "";       // phpMyAdmin password
-$dbname = "web_app_project_db";  // database name
+$user = "root";   
+$pass = "";       
+$dbname = "reflecto_db";  
 
 $conn = new mysqli($host, $user, $pass, $dbname);
 
 if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
+$conn->set_charset('utf8mb4');
 ?>
