@@ -9,6 +9,7 @@ body {
   color: #333;
 }
 
+
 /* PREVENT HORIZONTAL OVERFLOW */
 /* Prevent large translated images or very wide elements from creating a horizontal scrollbar */
 html, body { overflow-x: hidden; }

@@ -98,6 +98,7 @@ CREATE TABLE `task_logs` (
 -- Table structure for table `users`
 --
 
+
 CREATE TABLE `users` (
   `user_id` int(11) NOT NULL,
   `username` varchar(50) DEFAULT NULL,
